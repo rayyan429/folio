@@ -1,0 +1,37 @@
+[
+  {
+    "id": "01_backprop_gradient_descent",
+    "input": "PDFs on backpropagation and gradient descent",
+    "expected": "All files land in one topic folder (high pairwise similarity)",
+    "tests": "Basic input that passes validation",
+    "files_needed": "2+ PDFs: one on backpropagation, one on gradient descent"
+  },
+  {
+    "id": "02_ac_circuits_complex",
+    "input": "Lecture slides on AC circuits + a complex numbers review",
+    "expected": "Grouped together under something like 'AC Analysis'",
+    "tests": "Can it connect related material that shares few keywords?",
+    "files_needed": "AC circuits slides + complex numbers review PDF"
+  },
+  {
+    "id": "03_two_english_one_spanish",
+    "input": "2 English PDFs, 1 Spanish PDF",
+    "expected": "Sorts the 2 English files; Spanish one goes to Unsorted",
+    "tests": "Input that is only partially valid",
+    "files_needed": "2 English PDFs on one topic + 1 Spanish PDF"
+  },
+  {
+    "id": "04_non_english",
+    "input": "PDFs entirely in another language",
+    "expected": "Unable to sort, all go to Unsorted",
+    "tests": "Right file type, wrong language",
+    "files_needed": "2+ non-English PDFs"
+  },
+  {
+    "id": "05_html_files",
+    "input": "2 HTML files",
+    "expected": "Unable to sort, both go to Unsorted",
+    "tests": "Wrong file type",
+    "files_needed": "none, already included"
+  }
+]

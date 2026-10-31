@@ -1,0 +1,5 @@
+.venv/
+__pycache__/
+data/
+# Course slides aren't ours to publish; each teammate drops test PDFs in locally.
+tests/cases/**/*.pdf
