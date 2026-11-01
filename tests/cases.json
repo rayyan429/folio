@@ -30,7 +30,7 @@
   {
     "id": "05_html_files",
     "input": "3 HTML files",
-    "expected": "Unable to sort, both go to Unsorted",
+    "expected": "Unable to sort, all go to Unsorted",
     "tests": "Wrong file type",
     "files_needed": "none, already included"
   }

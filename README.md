@@ -47,28 +47,4 @@ This describes the first image in `data/sample/class17-images.pdf` with Gemini a
 
 ## Test cases
 
-PDFs aren't committed (course material). Drop them into the matching `tests/cases/<id>/` folder locally. Full definitions are in [`tests/cases.json`](tests/cases.json).
-
-### Component tests: extraction + embedding
-
-| # | Input | Expected output | What it tests |
-|---|---|---|---|
-| 1 | PDFs on backpropagation and gradient descent | Sorted together by topic | Basic valid input |
-| 2 | AC circuits slides + complex numbers review | Grouped under e.g. "AC Analysis" | Connecting related material |
-| 3 | 2 English PDFs, 1 Spanish | 2 English sorted, Spanish unsorted | Partially valid input |
-| 4 | PDFs in another language | Unable to sort | Right file type, wrong language |
-| 5 | 2 HTML files | Unable to sort | Wrong file type |
-
-### End-to-end tests: full pipeline
-
-Any file the system can't read or place goes on an **Unsorted** list instead of being forced into a folder.
-
-| Input | Expected output | What it tests |
-|---|---|---|
-| 4 CSCE 289 lectures (embeddings, transformers, RAG) | Folders like "Embeddings and Retrieval" and "LLM Functionality" | Basic valid input |
-| The same lectures + 2 PDFs on RREF and QR factorization | The above plus a separate "Linear Algebra" folder | Unrelated sets of files |
-| The same lectures + a password-protected PDF | The lecture folders; locked PDF goes to Unsorted | Admitting failure |
-
-### Scoring
-
-Results are scored on **grouping** (are the right files together?) and **naming** (does the folder name describe its contents?). A human applies the naming rubric, because an exact string match would mark "Embeddings & Retrieval" vs. "Retrieval and Embeddings" as a failure.
+See [`tests/README.md`](tests/README.md) for the test cases, how to run them, how results are scored, and which ones pass so far.
