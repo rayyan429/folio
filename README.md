@@ -17,10 +17,38 @@ Keyword search can't group documents by what they're about. A slide deck on back
 
 ## Approach
 
+```mermaid
+flowchart LR
+    PDF[/"Folder of PDFs"/]
+    E["1. Extract<br/>slide text<br/><i>extract.py</i>"]
+    V["2. Vision<br/>image descriptions<br/><i>vision.py</i>"]
+    EM["3. Embeddings<br/>text → vectors"]
+    C["4. Clustering<br/>group by topic"]
+    N["5. Naming<br/>LLM names folders"]
+    R["6. Review<br/>user approves moves"]
+    U[("Unsorted")]
+
+    PDF --> E
+    PDF --> V
+    E --> EM
+    V --> EM
+    EM --> C --> N --> R
+    E -. "unreadable files" .-> U
+
+    classDef done fill:#2e7d32,stroke:#1b5e20,color:#ffffff
+    classDef wip fill:#f9a825,stroke:#c17900,color:#000000
+    classDef todo fill:#eceff1,stroke:#90a4ae,color:#37474f,stroke-dasharray: 4 3
+    class E done
+    class V wip
+    class EM,C,N,R todo
+```
+
+🟩 done · 🟨 in progress · ⬜ planned
+
 | Step | What it does | Module | Status |
 |---|---|---|---|
 | 1 | Extract text from each PDF, one chunk per slide | `folio/extract.py` | ✅ |
-| 2 | Describe the images on each slide with a vision model (Gemini) | `folio/vision.py` | ✅ (demo on one image) |
+| 2 | Describe the images on each slide with a vision model (Gemini) | `folio/vision.py` | 🚧 working on one image; still needs every image + skipping logos |
 | 3 | Embed slide text + image descriptions with a transformer, one vector per document | — | planned |
 | 4 | Cluster documents by topic | `folio/cluster.py` | planned |
 | 5 | Have an LLM name each cluster | `folio/name.py` | planned |
