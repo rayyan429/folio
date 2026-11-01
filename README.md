@@ -20,9 +20,9 @@ Keyword search can't group documents by what they're about. A slide deck on back
 | Step | What it does | Module | Status |
 |---|---|---|---|
 | 1 | Extract text from each PDF, one chunk per slide | `folio/extract.py` | ✅ |
-| 2 | Embed the chunks with a sentence-transformer, average them into one vector per document | `folio/embed.py` | ✅ |
-| 3 | Describe diagrams and charts with a vision model | `folio/vision.py` | planned |
-| 4 | Cluster documents by topic using text and image info | `folio/cluster.py` | planned |
+| 2 | Describe the images on each slide with a vision model (Gemini) | `folio/vision.py` | ✅ (demo on one image) |
+| 3 | Embed slide text + image descriptions with a transformer, one vector per document | — | planned |
+| 4 | Cluster documents by topic | `folio/cluster.py` | planned |
 | 5 | Have an LLM name each cluster | `folio/name.py` | planned |
 | 6 | Propose the folders and let the user review them before files move | — | planned |
 
@@ -32,10 +32,11 @@ Keyword search can't group documents by what they're about. A slide deck on back
 python -m venv .venv
 .venv\Scripts\activate          # Windows  (macOS/Linux: source .venv/bin/activate)
 pip install -r requirements.txt
-python -m folio.embed path/to/folder
+setx GEMINI_API_KEY "your-key"   # free key from aistudio.google.com, then reopen the terminal
+python -m folio.vision
 ```
 
-This prints a cosine-similarity matrix: 1.0 means identical topic, near 0 means unrelated.
+This describes the first image in `data/sample/class17-images.pdf` with Gemini and prints the prompt, the input, and the output.
 
 ## What could go wrong
 
