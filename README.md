@@ -47,4 +47,4 @@ This describes the first image in `data/sample/class17-images.pdf` with Gemini a
 
 ## Test cases
 
-See [`tests/README.md`](tests/README.md) for the test cases, how to run them, how results are scored, and which ones pass so far.
+See [`tests/READ_TESTS.md`](tests/READ_TESTS.md) for the test cases, how to run them, how results are scored, and which ones pass so far.
