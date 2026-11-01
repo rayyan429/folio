@@ -1,3 +1,7 @@
 pypdf
 sentence-transformers
 numpy
+google-genai
+pillow
+google-gen-ai
+pillow
