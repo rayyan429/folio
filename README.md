@@ -48,10 +48,9 @@ flowchart LR
 | Step | What it does | Module | Status |
 |---|---|---|---|
 | 1 | Extract text from each PDF, one chunk per slide | `folio/extract.py` | ✅ |
-| 2 | Describe the images on each slide with a vision model (Gemini) | `folio/vision.py` | 🚧 working on one image; still needs every image + skipping logos |
-| 3 | Embed slide text + image descriptions with a transformer, one vector per document | — | planned |
+| 2 | Describe the images on each slide with a vision model (Gemini) | `folio/vision.py` | ✅ |
 | 4 | Cluster documents by topic | `folio/cluster.py` | planned |
-| 5 | Have an LLM name each cluster | `folio/name.py` | planned |
+| 5 | Have an LLM name each cluster | `folio/name.py` | In progress (Rayyan) |
 | 6 | Propose the folders and let the user review them before files move | — | planned |
 
 ## Setup
