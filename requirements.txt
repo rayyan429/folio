@@ -1,7 +1,4 @@
-pypdf
+pymupdf
+google-genai
 sentence-transformers
 numpy
-google-genai
-pillow
-google-gen-ai
-pillow
