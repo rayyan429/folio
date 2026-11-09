@@ -1,6 +1,6 @@
-pypdf
+pymupdf
+google-genai
 sentence-transformers
 numpy
 scikit-learn
-google-genai
 pillow
