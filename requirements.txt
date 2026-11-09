@@ -1,7 +1,6 @@
 pypdf
 sentence-transformers
 numpy
+scikit-learn
 google-genai
-pillow
-google-gen-ai
 pillow
