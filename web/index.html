@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Folio</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Folio</h1>
+    <p class="tagline">Drop in your lecture PDFs. Folio proposes topic folders, you adjust them, then download the sorted set.</p>
+  </header>
+
+  <main>
+    <!-- Step 1: choose files -->
+    <section id="upload" class="panel">
+      <label id="dropzone" for="picker">
+        <input id="picker" type="file" multiple accept=".pdf,application/pdf">
+        <strong>Drop PDFs here</strong>
+        <span>or click to choose files</span>
+      </label>
+      <ul id="chosen"></ul>
+      <button id="analyzeBtn" class="primary" disabled>Sort these files</button>
+    </section>
+
+    <!-- Step 2: working -->
+    <section id="working" class="panel" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <p id="workingText">Reading slides and describing figures…</p>
+      <p class="hint">The first run on a new deck takes about 20 seconds per deck. Decks Folio has seen before are instant.</p>
+    </section>
+
+    <!-- Step 3: review and approve -->
+    <section id="review" hidden>
+      <div class="review-head">
+        <div>
+          <h2>Proposed folders</h2>
+          <p class="hint">Rename a folder by editing its name. Move a file with the menu next to it. Nothing is final until you approve.</p>
+        </div>
+        <button id="addFolderBtn">+ New folder</button>
+      </div>
+      <p id="method" class="note" hidden></p>
+      <ul id="warnings" class="note" hidden></ul>
+      <div id="folders" class="folders"></div>
+      <div class="actions">
+        <button id="restartBtn">Start over</button>
+        <button id="approveBtn" class="primary">Approve and download ZIP</button>
+      </div>
+    </section>
+
+    <p id="error" role="alert" hidden></p>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>
