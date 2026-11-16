@@ -1,5 +1,6 @@
 pymupdf
 google-genai
+flask
 sentence-transformers
 numpy
 scikit-learn
