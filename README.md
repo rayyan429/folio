@@ -22,10 +22,10 @@ flowchart LR
     PDF[/"Folder of PDFs"/]
     E["1. Extract<br/>slide text<br/><i>extract.py</i>"]
     V["2. Vision<br/>image descriptions<br/><i>vision.py</i>"]
-    EM["3. Embeddings<br/>text → vectors"]
-    C["4. Clustering<br/>group by topic"]
-    N["5. Naming<br/>LLM names folders"]
-    R["6. Review<br/>user approves moves"]
+    EM["3. Embeddings<br/>text → vectors<br/><i>embeddings.py</i>"]
+    C["4. Clustering<br/>group by topic<br/><i>cluster.py</i>"]
+    N["5. Naming<br/>LLM names folders<br/><i>name.py</i>"]
+    R["6. Review<br/>user approves moves<br/><i>app.py + web/</i>"]
     U[("Unsorted")]
 
     PDF --> E
@@ -38,9 +38,8 @@ flowchart LR
     classDef done fill:#2e7d32,stroke:#1b5e20,color:#ffffff
     classDef wip fill:#f9a825,stroke:#c17900,color:#000000
     classDef todo fill:#eceff1,stroke:#90a4ae,color:#37474f,stroke-dasharray: 4 3
-    class E done
-    class V wip
-    class EM,C,N,R todo
+    class E,V,EM,C done
+    class N,R wip
 ```
 
 🟩 done · 🟨 in progress · ⬜ planned
@@ -49,9 +48,14 @@ flowchart LR
 |---|---|---|---|
 | 1 | Extract text from each PDF, one chunk per slide | `folio/extract.py` | ✅ |
 | 2 | Describe the images on each slide with a vision model (Gemini) | `folio/vision.py` | ✅ |
-| 4 | Cluster documents by topic | `folio/cluster.py` | planned |
-| 5 | Have an LLM name each cluster | `folio/name.py` | In progress (Rayyan) |
-| 6 | Propose the folders and let the user review them before files move | — | planned |
+| 3 | Embed each document's chunks with `all-MiniLM-L6-v2` and average them into one vector per document | `folio/embeddings.py` | ✅ |
+| 4 | Cluster documents by topic (agglomerative clustering, cosine distance threshold 0.35) | `folio/cluster.py` | ✅ |
+| 5 | Have an LLM name each cluster | `folio/name.py` | In progress (Rayyan): `profile_document()` done, `name_clusters()` not written yet |
+| 6 | Propose the folders and let the user review them before files move | `app.py`, `web/` | In progress: Flask app works end to end, but still groups by a stand-in until steps 3–5 are wired into `pipeline.py` |
+
+**Results on `data/sample` (slide text only):** the two retrieval lectures have cosine similarity 0.86. Every other pair is 0.37–0.51. Clustering puts them in one folder and leaves the agents and images lectures in their own folders.
+
+**Next:** write `name_clusters()`, then replace the stand-in `propose_folders()` in `pipeline.py` with `embed_documents` → `cluster_documents` → `name_clusters`.
 
 ## Setup
 
