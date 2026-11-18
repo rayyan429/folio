@@ -64,10 +64,33 @@ python -m venv .venv
 .venv\Scripts\activate          # Windows  (macOS/Linux: source .venv/bin/activate)
 pip install -r requirements.txt
 setx GEMINI_API_KEY "your-key"   # free key from aistudio.google.com, then reopen the terminal
-python -m folio.vision
 ```
 
-This describes the first image in `data/sample/class17-images.pdf` with Gemini and prints the prompt, the input, and the output.
+Without a Gemini key, Folio still runs, but it sorts using slide text only.
+
+## Using the app
+
+```bash
+python app.py
+```
+
+Then open http://127.0.0.1:5000 in your browser.
+
+1. **Choose files.** Drag PDFs onto the drop zone, or click it to choose several at once. Then click **Sort these files**.
+2. **Review the proposed folders.** Click a folder's name to rename it. Use the dropdown next to a file to move it to another folder. **+ New folder** adds an empty folder. Files Folio couldn't read are listed under Unsorted.
+3. **Approve.** **Approve and download ZIP** gives you a copy of the files sorted into your folders. Nothing on your own disk is moved or changed.
+
+The first run on a new deck takes about 20 seconds while Gemini describes its figures. Decks Folio has already seen are cached and load instantly.
+
+## Running steps on their own
+
+Each step can be run by itself on the files in `data/sample/`:
+
+```bash
+python -m folio.vision       # describe the first image in class17-images.pdf
+python -m folio.embeddings   # similarity matrix between the sample decks
+python -m folio.cluster      # which sample decks end up in the same folder
+```
 
 ## What could go wrong
 
