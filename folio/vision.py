@@ -131,7 +131,8 @@ def save_cache(cache : dict):
     CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     CACHE_PATH.write_text(json.dumps(cache, indent=1))
 
-def describe_pdf(path : Path) -> list[dict]: # every useful image in the PDF -> [{"page": 4, "description": "..."}]
+def describe_pdf(path : Path, stats : dict = None) -> list[dict]: # every useful image in the PDF -> [{"page": 4, "description": "..."}]
+    # stats: optional dict that gets filled with {"images": unique images, "new": how many weren't cached yet}
     images = extract_images(path)
     cache = load_cache()
 
@@ -141,6 +142,8 @@ def describe_pdf(path : Path) -> list[dict]: # every useful image in the PDF -> 
     for im in images:
         unique.setdefault(key(im), im)
     todo = [im for k, im in unique.items() if k not in cache]
+    if stats is not None:
+        stats.update(images=len(unique), new=len(todo))
 
     for i in range(0, len(todo), BATCH_SIZE):
         batch = todo[i:i + BATCH_SIZE]
