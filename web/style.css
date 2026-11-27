@@ -7,9 +7,9 @@
   --ink: #12263a;              /* deep navy */
   --muted: #50657a;
   --line: #d3e2ef;
-  --accent: #3f5d78;          /* dark dusty blue, dark enough for white text */
-  --accent-2: #344e66;
-  --accent-soft: #e1e9f1;
+  --accent: #c2501f;          /* burnt orange: the complement of sky blue, dark enough for white text */
+  --accent-2: #a8431a;
+  --accent-soft: #fdeadf;
   --accent-ink: #ffffff;
   --ok: #2f7d4f;
   --warn: #8a5a00;
@@ -36,10 +36,10 @@
     --ink: #e8eef5;
     --muted: #98a8b8;
     --line: #2a3644;
-    --accent: #8fb0cc;          /* lighter dusty blue, readable on navy */
-    --accent-2: #a7c2da;
-    --accent-soft: #1d2a38;
-    --accent-ink: #0c1621;
+    --accent: #ff9d6c;          /* softer peach-orange, readable on navy */
+    --accent-2: #ffb48d;
+    --accent-soft: #33241c;
+    --accent-ink: #2a1206;
     --ok: #6fcf97;
     --warn: #f1c46a;
     --warn-bg: #2c2615;
