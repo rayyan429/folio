@@ -4,53 +4,121 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Folio</title>
+  <meta name="description" content="Sort a messy folder of lecture PDFs into named topic folders.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%233f5d78'/%3E%3Cpath d='M8 11a2 2 0 0 1 2-2h4l2 2h6a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H10a2 2 0 0 1-2-2z' fill='white'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header>
-    <h1>Folio</h1>
-    <p class="tagline">Drop in your lecture PDFs. Folio proposes topic folders, you adjust them, then download the sorted set.</p>
+  <!-- Icons used across the page, drawn once and reused with <use href="#..."> -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4.2l2 2H19a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" fill="currentColor"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M7 3h7l5 5v11a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 3v5h5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 15V4m0 0L7.5 8.5M12 4l4.5 4.5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-grip" viewBox="0 0 24 24"><g fill="currentColor"><circle cx="9" cy="6" r="1.5"/><circle cx="15" cy="6" r="1.5"/><circle cx="9" cy="12" r="1.5"/><circle cx="15" cy="12" r="1.5"/><circle cx="9" cy="18" r="1.5"/><circle cx="15" cy="18" r="1.5"/></g></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z" fill="currentColor"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 7.5v5.5M12 16.5v.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></symbol>
+  </svg>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo"><svg><use href="#i-folder"/></svg></span>
+      <span class="brand-name">Folio</span>
+    </div>
   </header>
 
   <main>
     <!-- Step 1: choose files -->
-    <section id="upload" class="panel">
-      <label id="dropzone" for="picker">
+    <section id="upload" class="screen">
+      <div class="hero-wrap">
+        <div class="hero">
+          <h1>Turn a messy downloads folder into tidy topic folders.</h1>
+          <p>Drop in any PDFs: lecture slides, papers, notes, forms. Folio reads the text and figures, groups the files by topic, and names each folder. You check the result before anything is saved.</p>
+        </div>
+        <!-- Demo animation: sample files sorting into folders (built by app.js) -->
+        <div id="heroSorter" class="card sorter" aria-hidden="true"></div>
+      </div>
+
+      <label id="dropzone" class="dropzone" for="picker">
         <input id="picker" type="file" multiple accept=".pdf,application/pdf">
+        <span class="drop-icon"><svg><use href="#i-upload"/></svg></span>
         <strong>Drop PDFs here</strong>
-        <span>or click to choose files</span>
+        <span class="muted">or <u>browse your files</u></span>
       </label>
-      <ul id="chosen"></ul>
-      <button id="analyzeBtn" class="primary" disabled>Sort these files</button>
+
+      <div id="chosenWrap" class="card chosen" hidden>
+        <div class="card-head">
+          <h2 id="chosenTitle">Files to sort</h2>
+          <button id="clearBtn" class="link">Clear all</button>
+        </div>
+        <ul id="chosen" class="file-list"></ul>
+      </div>
+
+      <div class="bar end">
+        <button id="analyzeBtn" class="btn primary" disabled>Sort files</button>
+      </div>
     </section>
 
     <!-- Step 2: working -->
-    <section id="working" class="panel" hidden>
-      <div class="spinner" aria-hidden="true"></div>
-      <p id="workingText">Reading slides and describing figures…</p>
-      <p class="hint">The first run on a new deck takes about 20 seconds per deck. Decks Folio has seen before are instant.</p>
+    <section id="working" class="screen" hidden>
+      <div class="work-head">
+        <h1 id="workingTitle">Sorting your files</h1>
+        <span class="timer" aria-live="off"><span id="elapsed">0</span> s</span>
+      </div>
+      <!-- The three real stages of the pipeline; the server reports which one it's in -->
+      <ol class="stages" aria-label="Sorting stages">
+        <li data-stage="reading"><span class="stage-dot"></span><span>Reading files</span><span id="readCount" class="stage-count"></span></li>
+        <li data-stage="grouping"><span class="stage-dot"></span><span>Grouping by topic</span></li>
+        <li data-stage="sorting"><span class="stage-dot"></span><span>Sorting into folders</span></li>
+      </ol>
+      <div class="progress" aria-hidden="true"><div id="progressBar"></div></div>
+      <p id="stageHint" class="muted stage-hint"></p>
+      <!-- Stage 1-2: one card per uploaded file, updated live -->
+      <ul id="workFiles" class="work-files" aria-live="polite"></ul>
+      <!-- Stage 3: the real folders appear and the files fly into them (built by app.js) -->
+      <div id="workSorter" class="card sorter work" aria-hidden="true" hidden></div>
     </section>
 
     <!-- Step 3: review and approve -->
-    <section id="review" hidden>
+    <section id="review" class="screen" hidden>
       <div class="review-head">
         <div>
-          <h2>Proposed folders</h2>
-          <p class="hint">Rename a folder by editing its name. Move a file with the menu next to it. Nothing is final until you approve.</p>
+          <h1>Here's how Folio would organize them</h1>
+          <p id="summary" class="muted"></p>
         </div>
-        <button id="addFolderBtn">+ New folder</button>
+        <button id="addFolderBtn" class="btn"><svg class="ico"><use href="#i-plus"/></svg>New folder</button>
       </div>
+      <p class="tip">Click a folder name to rename it. Drag a file onto another folder to move it, or use its menu. The tags under each name are the words that set that folder's files apart.</p>
       <p id="method" class="note" hidden></p>
       <ul id="warnings" class="note" hidden></ul>
       <div id="folders" class="folders"></div>
-      <div class="actions">
-        <button id="restartBtn">Start over</button>
-        <button id="approveBtn" class="primary">Approve and download ZIP</button>
+
+      <div class="bar sticky">
+        <button id="restartBtn" class="btn ghost">Start over</button>
+        <button id="approveBtn" class="btn primary"><svg class="ico"><use href="#i-check"/></svg>Approve &amp; download ZIP</button>
       </div>
     </section>
 
-    <p id="error" role="alert" hidden></p>
+    <!-- Step 4: done -->
+    <section id="done" class="screen center" hidden>
+      <span class="done-badge"><svg><use href="#i-check"/></svg></span>
+      <h1>Your folders are ready</h1>
+      <p class="muted"><span id="doneSummary"></span> Your download should have started; if not, use the button below.</p>
+      <div class="row">
+        <button id="redownloadBtn" class="btn">Download again</button>
+        <button id="newBtn" class="btn primary">Sort more files</button>
+      </div>
+    </section>
+
+    <div id="error" class="error" role="alert" hidden></div>
   </main>
+
+  <footer class="foot">Built by Rayyan Arshad &amp; Nayeel Suleman</footer>
 
   <script src="app.js"></script>
 </body>
